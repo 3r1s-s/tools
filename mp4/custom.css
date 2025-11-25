@@ -1,0 +1,248 @@
+[type="file"] {
+  font-family: inherit;
+  width: 140px;
+}
+
+::file-selector-button {
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    font-weight: 600;
+
+
+    width: 140px;
+}
+
+::file-selector-button:hover {
+    background-color: var(--accent-200);
+}
+
+.container {
+    max-width: 700px;
+}
+
+.input {
+    display: flex;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.input > .button, .input > ::file-selector-button {
+    width: 140px;
+}
+
+.info {
+    display: flex;
+    /* gap: 0.15rem; */
+    justify-content: space-around;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.canvas {
+    border: 1px solid var(--color-light);
+    border-radius: 0.25rem;
+    background-color: #fff;
+    margin: 0.5rem;
+}
+
+.slider {
+    text-align: left;
+    width: 100%;
+}
+
+.slider > input {
+    cursor: ew-resize;
+}
+
+.slider > p {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.video {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.center-flex {
+    display: flex;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.output-outer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    opacity: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.output-outer.visible {
+    opacity: 1;
+    top: 0;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.output-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    transform: translateY(15px);
+    opacity: 0;
+    text-align: center;
+    background-color: var(--bg-light-000);
+    padding: 2rem;
+    padding-top: calc(2rem + 25px);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.output-outer.visible .output-inner {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.output-outer.animate-out > .output-inner {
+    transform: translateY(15px);
+    opacity: 0;
+}
+
+.output-outer.animate-out {
+    opacity: 0;
+}
+
+.output-text {
+    resize: none;
+    border-radius: 10px;
+    background-color: #fff;
+    border: 1px solid var(--color-light);
+    padding: 10px;
+    width: 100%;
+}
+
+button:disabled, input:disabled::file-selector-button, input[type="range"]:disabled,
+button[disabled], input[disabled]::file-selector-button, input[type="range"][disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.title {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(2rem + 25px);
+}
+
+.title-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.title > .close-button {
+    position: absolute;
+    top: 0rem;
+    right: 0rem;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+
+    background-color: transparent;
+    color: var(--color-light);
+    border: none;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.buttons {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.buttons > .button {
+    flex-grow: 1;
+    margin-top: 0;
+    width: 100%;
+}
+
+.progressbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: var(--background-light);
+}
+
+#progress {
+    display: block;
+    background-color: var(--accent);
+    height: 8px;
+    width: 0;
+    transition: width 0.1s ease-out, opacity 0.2s ease-out;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    opacity: 1;
+}
+
+#progress.animate-out {
+    opacity: 0;
+}
+
+@supports (corner-shape: superellipse(2)) {
+    ::file-selector-button {
+        border-radius: 50px;
+        corner-shape: superellipse(2);
+    }
+
+    .output-inner {
+        border-radius: 50px;
+        corner-shape: superellipse(2);
+    }
+}

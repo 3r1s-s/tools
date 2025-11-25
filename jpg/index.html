@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG Compressor</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="custom.css">
+    <link rel="stylesheet" href="https://eris.cafe/fonts.css">
+    <link rel="icon" href="https://eris.cafe/apps/assets/images/glass/light/jpg.png">
+</head>
+<body>
+    <div class="container flex">
+        <h1>JPG Compressor</h1>
+        <div class="imgs">
+            <div class="imgcont">
+                <img class="disimage" id="ogimage" style="display:none;">
+            </div>
+            <div class="imgcont">
+                <img class="disimage" id="compressedimage" style="display:none;">
+            </div>
+        </div>
+        <div class="center-flex">
+            <input type="file" id="imagein" accept="image/*">
+            <button class="button" id="saveButton" onclick="saveImage();" style="width: 140px;">Save Image</button>
+        </div>
+        <div class="sliders">
+            <div class="sec slider">
+                <p for="compressionslider">Compression Level: <span id="compressionval">80%</span></p>
+                
+                <input type="range" id="compressionslider" min="1" max="100" value="80" class="slider">
+            </div>
+        </div>
+        <div class="sec">
+            <label for="webpcheck">Use WebP:</label>
+            <input type="checkbox" id="webpcheck">
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://eris.cafe/apps/popup.js"></script>
+    <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
+    <div class="apps"><div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="35" height="35" fill="currentColor"></rect><rect y="70" width="35" height="35" fill="currentColor"></rect><rect y="140" width="35" height="35" fill="currentColor"></rect><rect x="140" width="35" height="35" fill="currentColor"></rect><rect x="140" y="70" width="35" height="35" fill="currentColor"></rect><rect x="140" y="140" width="35" height="35" fill="currentColor"></rect><rect x="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="140" width="35" height="35" fill="currentColor"></rect></svg></div><div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0" style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe></div></div>
+    <script>setAppsTheme('light');</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+:root {
+    --color: #f5f2ff;
+    --color-light: #2c3e50;
+
+    --bg-000: #0d0d0e;
+    --bg-100: #121214;
+    --bg-200: #14131a;
+    --bg-300: #201f28;
+    --bg-400: #302b41;
+    --bg-500: #3b3748;
+
+    --bg-light-000: #e7e7f5;
+    --bg-light-100: #d1d1e0;
+    --bg-light-200: #d2d2e3;
+    --bg-light-300: #d1d1e0;
+    --bg-light-400: #c9c9d6;
+    --bg-light-500: #c1c1d3;
+
+    --accent: #b098e9;
+
+    --green-100: #23a55a;
+    --green-200: #1b924d;
+    --red-100: #e33b3f;
+    --red-200: #d62b2f;
+    --blue-100: #5865f2;
+    --blue-200: #4f5be0;
+}
+
+body {
+    background: var(--bg-light-200);
+    color: var(--color-light);
+    font-family: "GG Sans", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+input {
+    font-family: inherit;
+}
+
+.container {
+    text-align: center;
+    background-color: var(--bg-light-000);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.result {
+    font-size: 4rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    color: #3498db;
+}
+
+.instruction {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #7f8c8d;
+}
+
+.status {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    height: 30px;
+}
+
+.reset {
+    background-color: var(--red-100);
+    color: var(--color);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.reset:hover {
+    background-color: var(--red-200);
+}
+
+.cat {
+    font-size: 4rem;
+}
+
+@media (max-width: 600px) {
+    .result {
+        font-size: 3rem;
+    }
+
+    .instruction {
+        font-size: 1rem;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.form-input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+    height: 32px;
+    background: var(--bg-light-000);
+    outline: none;
+    border: 2px solid var(--color-light);
+    caret-color: var(--blue-200);
+    color: var(--color-light);
+    transition: border .15s ease-out;
+}
+
+.form-input:focus {
+    border: 2px solid var(--blue-200);
+}
+
+.form {
+    position: relative;
+}
+
+.form label {
+    transition: all .15s ease-out;
+    color: var(--app-900);
+    background: var(--bg-light-000);
+    pointer-events: none;
+    display: block;
+    padding: 0 .25rem;
+    position: absolute;
+    left: 6px;
+    top: 5.5px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.form-input:focus + label {
+    font-weight: 600;
+    color: var(--blue-200);
+    width: auto;
+}
+
+.form-input:focus + label,
+.form-input.filled + label,
+.form.always-active label {
+    top: -10px;
+    left: 5px;
+    font-size: .75em;
+}
+
+@supports (corner-shape: superellipse(2)) {
+    .button, .reset {
+        border-radius: 50px;
+        corner-shape: superellipse(2);
+    }
+
+    .container {
+        border-radius: 50px;
+        corner-shape: superellipse(2);
+    }
+
+    .qr {
+        border-radius: 15px;
+        corner-shape: superellipse(2);
+    }
+}

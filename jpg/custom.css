@@ -1,0 +1,80 @@
+[type="file"] {
+  font-family: inherit;
+  width: 140px;
+}
+
+::file-selector-button {
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    font-weight: 600;
+
+
+    width: 140px;
+}
+
+::file-selector-button:hover {
+    background-color: var(--accent-200);
+}
+
+.container {
+    max-width: 700px;
+}
+
+.imgs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.imgcont {
+    border: 1px solid var(--color-light);
+    border-radius: 0.25rem;
+    background-color: #fff;
+    margin: 0.5rem;
+    overflow: hidden;
+
+    width: 256px;
+    height: 256px;
+}
+
+.imgcont > img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.slider {
+    text-align: left;
+    width: 100%;
+}
+
+.slider > input {
+    cursor: ew-resize;
+}
+
+.slider > p {
+    user-select: none;
+    -webkit-user-select: none;
+    font-weight: 400;
+}
+
+@supports (corner-shape: superellipse(2)) {
+    ::file-selector-button {
+        border-radius: 50px;
+        corner-shape: superellipse(2);
+    }
+
+    .output-inner {
+        border-radius: 50px;
+        corner-shape: superellipse(2);
+    }
+}
