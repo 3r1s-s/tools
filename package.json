@@ -17,7 +17,7 @@
     "url": "git+https://github.com/3r1s-s/tools.git"
   },
   "author": "Eris S.",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/3r1s-s/tools/issues"
   },
