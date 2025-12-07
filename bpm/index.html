@@ -7,88 +7,18 @@
   <title>BPM Detector</title>
   <link rel="icon" href="https://eris.cafe/apps/assets/images/glass/light/bpm.png">
 
+  <link rel="stylesheet" href="../styles.css">
   <style>
-    /* I HATE inline css but i cant be bothered to make a new file */
-
-    :root {
-      --color: #f5f2ff;
-      --color-light: #2c3e50;
-
-      --bg-000: #0d0d0e;
-      --bg-100: #121214;
-      --bg-200: #14131a;
-      --bg-300: #201f28;
-      --bg-400: #302b41;
-      --bg-500: #3b3748;
-
-      --bg-light-000: #e7e7f5;
-      --bg-light-100: #d1d1e0;
-      --bg-light-200: #d2d2e3;
-      --bg-light-300: #d1d1e0;
-      --bg-light-400: #c9c9d6;
-      --bg-light-500: #c1c1d3;
-
-      --accent: #b098e9;
-
-      --green-100: #23a55a;
-      --green-200: #1b924d;
-      --red-100: #e33b3f;
-      --red-200: #d62b2f;
-      --blue-100: #5865f2;
-      --blue-200: #4f5be0;
-    }
-
-    body {
-      background: var(--bg-light-200);
-      color: var(--color-light);
-      font-family: "GG Sans", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
-      margin: 0;
-      padding: 0;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      text-align: center;
-      background-color: var(--bg-light-000);
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      width: 90%;
-    }
-
-    h1 {
-      color: #2c3e50;
-      margin-bottom: 1rem;
-    }
-
-    .result {
+    .result-no {
       font-size: 4rem;
       font-weight: bold;
       margin: 1rem 0;
       color: #3498db;
     }
 
-    .instruction {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      color: #7f8c8d;
-    }
-
-    .status {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      height: 30px;
-    }
-
     .reset {
       background-color: var(--red-100);
-      color: var(--color);
+      color: #fff;
       border: none;
       padding: 0.5rem 1rem;
       font-size: 1rem;
@@ -105,7 +35,12 @@
     }
 
     .cat {
-      font-size: 4rem;
+      width: 4rem;
+      margin: 0 auto;
+    }
+
+    .cat img {
+      width: 100%;
     }
 
     @media (max-width: 600px) {
@@ -125,10 +60,12 @@
     <h1>BPM Detector</h1>
     <p class="instruction">Press the spacebar twice to the beat of your music</p>
     <div class="status" id="status">Ready</div>
-    <div class="result" id="result">0</div>
+    <div class="result-no" id="result">0</div>
     <button class="reset" id="reset">Reset</button>
     <p>Tap in time with your music for accurate results</p>
-    <div class="cat">🐱</div>
+    <div class="cat">
+      <img src="../images/cat_face_3d.png" alt="cat">
+    </div>
   </div>
 
   <script>
@@ -201,10 +138,26 @@
       }
     });
   </script>
-    <script src="https://eris.cafe/apps/popup.js"></script>
-    <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
-    <div class="apps"><div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="35" height="35" fill="currentColor"></rect><rect y="70" width="35" height="35" fill="currentColor"></rect><rect y="140" width="35" height="35" fill="currentColor"></rect><rect x="140" width="35" height="35" fill="currentColor"></rect><rect x="140" y="70" width="35" height="35" fill="currentColor"></rect><rect x="140" y="140" width="35" height="35" fill="currentColor"></rect><rect x="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="140" width="35" height="35" fill="currentColor"></rect></svg></div><div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0" style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe></div></div>
-    <script>setAppsTheme('light');</script>
+  <script src="https://eris.cafe/apps/popup.js"></script>
+  <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
+  <div class="apps">
+    <div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <rect width="35" height="35" fill="currentColor"></rect>
+        <rect y="70" width="35" height="35" fill="currentColor"></rect>
+        <rect y="140" width="35" height="35" fill="currentColor"></rect>
+        <rect x="140" width="35" height="35" fill="currentColor"></rect>
+        <rect x="140" y="70" width="35" height="35" fill="currentColor"></rect>
+        <rect x="140" y="140" width="35" height="35" fill="currentColor"></rect>
+        <rect x="70" width="35" height="35" fill="currentColor"></rect>
+        <rect x="70" y="70" width="35" height="35" fill="currentColor"></rect>
+        <rect x="70" y="140" width="35" height="35" fill="currentColor"></rect>
+      </svg></div>
+    <div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0"
+        style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe>
+    </div>
+  </div>
+  <script>setAppsTheme('light');</script>
 </body>
 
 </html>

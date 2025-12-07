@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="custom.css">
     <link rel="stylesheet" href="https://eris.cafe/fonts.css">
     <link rel="icon" href="https://eris.cafe/apps/assets/images/glass/light/qr.png">
 </head>
@@ -14,13 +15,15 @@
 <body>
     <div class="container flex">
         <h1>QR Code Generator</h1>
-        <div class="form always-active" style="--form-height: 40px;"><input class="form-input" id="linkInput" type="text" autocomplete=""><label for="linkInput">Enter text or URL</label></div>
+
+        <eui-input id="linkInput" type="text" autocomplete="" label="Enter text or URL" filled></eui-input>
         <button class="button" id="generate" style="height: 40px;" onclick="generateQRCode()">Generate QR Code</button>
         <div class="result hide" id="result">
             <div class="qr" id="qr"></div>
         </div>
     </div>
 
+    <script src="../src/main.js" type="module"></script>
     <script>
         function generateQRCode() {
             const linkInput = document.getElementById('linkInput');
@@ -41,7 +44,23 @@
 
     <script src="https://eris.cafe/apps/popup.js"></script>
     <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
-    <div class="apps"><div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="35" height="35" fill="currentColor"></rect><rect y="70" width="35" height="35" fill="currentColor"></rect><rect y="140" width="35" height="35" fill="currentColor"></rect><rect x="140" width="35" height="35" fill="currentColor"></rect><rect x="140" y="70" width="35" height="35" fill="currentColor"></rect><rect x="140" y="140" width="35" height="35" fill="currentColor"></rect><rect x="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="140" width="35" height="35" fill="currentColor"></rect></svg></div><div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0" style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe></div></div>
+    <div class="apps">
+        <div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="35" height="35" fill="currentColor"></rect>
+                <rect y="70" width="35" height="35" fill="currentColor"></rect>
+                <rect y="140" width="35" height="35" fill="currentColor"></rect>
+                <rect x="140" width="35" height="35" fill="currentColor"></rect>
+                <rect x="140" y="70" width="35" height="35" fill="currentColor"></rect>
+                <rect x="140" y="140" width="35" height="35" fill="currentColor"></rect>
+                <rect x="70" width="35" height="35" fill="currentColor"></rect>
+                <rect x="70" y="70" width="35" height="35" fill="currentColor"></rect>
+                <rect x="70" y="140" width="35" height="35" fill="currentColor"></rect>
+            </svg></div>
+        <div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0"
+                style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe>
+        </div>
+    </div>
     <script>setAppsTheme('light');</script>
 
 </body>

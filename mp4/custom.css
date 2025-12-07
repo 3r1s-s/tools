@@ -1,6 +1,6 @@
 [type="file"] {
-  font-family: inherit;
-  width: 140px;
+    font-family: inherit;
+    width: 140px;
 }
 
 ::file-selector-button {
@@ -37,7 +37,8 @@
     justify-content: center;
 }
 
-.input > .button, .input > ::file-selector-button {
+.input>.button,
+.input> ::file-selector-button {
     width: 140px;
 }
 
@@ -50,7 +51,7 @@
 }
 
 .canvas {
-    border: 1px solid var(--color-light);
+    border: 1px solid var(--app-text);
     border-radius: 0.25rem;
     background-color: #fff;
     margin: 0.5rem;
@@ -61,11 +62,11 @@
     width: 100%;
 }
 
-.slider > input {
+.slider>input {
     cursor: ew-resize;
 }
 
-.slider > p {
+.slider>p {
     user-select: none;
     -webkit-user-select: none;
 }
@@ -134,7 +135,7 @@
     opacity: 1;
 }
 
-.output-outer.animate-out > .output-inner {
+.output-outer.animate-out>.output-inner {
     transform: translateY(15px);
     opacity: 0;
 }
@@ -152,8 +153,12 @@
     width: 100%;
 }
 
-button:disabled, input:disabled::file-selector-button, input[type="range"]:disabled,
-button[disabled], input[disabled]::file-selector-button, input[type="range"][disabled] {
+button:disabled,
+input:disabled::file-selector-button,
+input[type="range"]:disabled,
+button[disabled],
+input[disabled]::file-selector-button,
+input[type="range"][disabled] {
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -177,7 +182,7 @@ button[disabled], input[disabled]::file-selector-button, input[type="range"][dis
     -webkit-user-select: none;
 }
 
-.title > .close-button {
+.title>.close-button {
     position: absolute;
     top: 0rem;
     right: 0rem;
@@ -205,7 +210,7 @@ button[disabled], input[disabled]::file-selector-button, input[type="range"][dis
     max-width: 300px;
 }
 
-.buttons > .button {
+.buttons>.button {
     flex-grow: 1;
     margin-top: 0;
     width: 100%;
