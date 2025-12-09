@@ -59,7 +59,7 @@ input {
     width: 90%;
 
     position: relative;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .container.flex {
