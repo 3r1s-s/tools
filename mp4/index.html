@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MP464</title>
 
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="custom.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/mp4/custom.css">
     <link rel="stylesheet" href="https://eris.cafe/fonts.css">
     <link rel="icon" href="https://eris.cafe/apps/assets/images/glass/light/base64.png">
 </head>
@@ -19,7 +19,8 @@
         </div>
         <h1>
             MP464
-            <p>Converts videos to Base64 to be playable in a <a href="https://scratch.mit.edu/projects/952509873/">Scratch Project</a>.</p>
+            <p>Converts videos to Base64 to be playable in a <a
+                    href="https://scratch.mit.edu/projects/952509873/">Scratch Project</a>.</p>
         </h1>
         <video id="video" width="0" height="0"></video>
         <div class="video">
@@ -52,10 +53,15 @@
             <div class="title">
                 <span class="title-name">Output</span>
                 <button class="close-button" id="close" onclick="closeOutput();">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3527 12.0051L19.8447 6.51314C20.496 5.86247 20.496 4.80714 19.8447 4.15647C19.1933 3.50514 18.1387 3.50514 17.488 4.15647L11.996 9.64847L6.50401 4.15647C5.85334 3.50514 4.79734 3.50514 4.14734 4.15647C3.49601 4.80714 3.49601 5.86247 4.14734 6.51314L9.63934 12.0051L4.13401 17.5105C3.48267 18.1618 3.48267 19.2165 4.13401 19.8671C4.45934 20.1925 4.88601 20.3551 5.31267 20.3551C5.73934 20.3551 6.16601 20.1925 6.49134 19.8671L11.9967 14.3611L17.4887 19.8531C17.814 20.1785 18.2407 20.3411 18.6673 20.3411C19.094 20.3411 19.52 20.1785 19.846 19.8531C20.4973 19.2018 20.4973 18.1471 19.846 17.4965L14.3527 12.0051Z" fill="currentColor"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.3527 12.0051L19.8447 6.51314C20.496 5.86247 20.496 4.80714 19.8447 4.15647C19.1933 3.50514 18.1387 3.50514 17.488 4.15647L11.996 9.64847L6.50401 4.15647C5.85334 3.50514 4.79734 3.50514 4.14734 4.15647C3.49601 4.80714 3.49601 5.86247 4.14734 6.51314L9.63934 12.0051L4.13401 17.5105C3.48267 18.1618 3.48267 19.2165 4.13401 19.8671C4.45934 20.1925 4.88601 20.3551 5.31267 20.3551C5.73934 20.3551 6.16601 20.1925 6.49134 19.8671L11.9967 14.3611L17.4887 19.8531C17.814 20.1785 18.2407 20.3411 18.6673 20.3411C19.094 20.3411 19.52 20.1785 19.846 19.8531C20.4973 19.2018 20.4973 18.1471 19.846 17.4965L14.3527 12.0051Z"
+                            fill="currentColor" />
+                    </svg>
                 </button>
             </div>
-            <textarea class="output-text" id="text" name="output" rows="10" cols="87" readonly onclick="this.select()"></textarea>
+            <textarea class="output-text" id="text" name="output" rows="10" cols="87" readonly
+                onclick="this.select()"></textarea>
             <div class="buttons">
                 <button class="button" id="saveButton" onclick="saveButton();">Save File</button>
                 <button class="button" id="copyButton" onclick="copyButton();">Copy</button>
@@ -64,7 +70,23 @@
     </div>
     <script src="https://eris.cafe/apps/popup.js"></script>
     <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
-    <div class="apps"><div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="35" height="35" fill="currentColor"></rect><rect y="70" width="35" height="35" fill="currentColor"></rect><rect y="140" width="35" height="35" fill="currentColor"></rect><rect x="140" width="35" height="35" fill="currentColor"></rect><rect x="140" y="70" width="35" height="35" fill="currentColor"></rect><rect x="140" y="140" width="35" height="35" fill="currentColor"></rect><rect x="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="140" width="35" height="35" fill="currentColor"></rect></svg></div><div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0" style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe></div></div>
+    <div class="apps">
+        <div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="35" height="35" fill="currentColor"></rect>
+                <rect y="70" width="35" height="35" fill="currentColor"></rect>
+                <rect y="140" width="35" height="35" fill="currentColor"></rect>
+                <rect x="140" width="35" height="35" fill="currentColor"></rect>
+                <rect x="140" y="70" width="35" height="35" fill="currentColor"></rect>
+                <rect x="140" y="140" width="35" height="35" fill="currentColor"></rect>
+                <rect x="70" width="35" height="35" fill="currentColor"></rect>
+                <rect x="70" y="70" width="35" height="35" fill="currentColor"></rect>
+                <rect x="70" y="140" width="35" height="35" fill="currentColor"></rect>
+            </svg></div>
+        <div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0"
+                style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe>
+        </div>
+    </div>
     <script>setAppsTheme('light');</script>
 </body>
 <script>
@@ -83,6 +105,6 @@
     });
     let imgData2 = ctx2.createImageData(width, height);
 </script>
-<script src="script.js"></script>
+<script src="/mp4/script.js"></script>
 
 </html>

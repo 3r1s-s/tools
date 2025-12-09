@@ -7,7 +7,7 @@
   <title>Square Root Simplifier</title>
 
   <link rel="stylesheet" href="https://eris.pages.dev/fonts.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/sqrt/styles.css">
   <link rel="icon" href="https://eris.cafe/apps/assets/images/glass/light/sqrt.png">
 
 </head>
@@ -15,7 +15,8 @@
 <body>
   <form id="sqrtForm" class="container">
     <h2>Simplest Radical Form Calculator</h2>
-    <div class="form always-active"><input class="form-input" id="numberInput" type="number" autocomplete=""><label for="id">Number</label></div>
+    <div class="form always-active"><input class="form-input" id="numberInput" type="number" autocomplete=""><label
+        for="id">Number</label></div>
     <button type="submit" class="reset">Simplify √</button>
     <div class="result" id="result">0</div>
   </form>
@@ -47,10 +48,26 @@
       document.getElementById('result').textContent = `√${num} = ${result}`;
     });
   </script>
-      <script src="https://eris.cafe/apps/popup.js"></script>
-    <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
-    <div class="apps"><div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="35" height="35" fill="currentColor"></rect><rect y="70" width="35" height="35" fill="currentColor"></rect><rect y="140" width="35" height="35" fill="currentColor"></rect><rect x="140" width="35" height="35" fill="currentColor"></rect><rect x="140" y="70" width="35" height="35" fill="currentColor"></rect><rect x="140" y="140" width="35" height="35" fill="currentColor"></rect><rect x="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="70" width="35" height="35" fill="currentColor"></rect><rect x="70" y="140" width="35" height="35" fill="currentColor"></rect></svg></div><div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0" style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe></div></div>
-    <script>setAppsTheme('light');</script>
+  <script src="https://eris.cafe/apps/popup.js"></script>
+  <link rel="stylesheet" href="https://eris.cafe/apps/app.css">
+  <div class="apps">
+    <div class="apps-button" onclick="toggleApps()"><svg width="16" height="16" viewBox="0 0 175 175" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <rect width="35" height="35" fill="currentColor"></rect>
+        <rect y="70" width="35" height="35" fill="currentColor"></rect>
+        <rect y="140" width="35" height="35" fill="currentColor"></rect>
+        <rect x="140" width="35" height="35" fill="currentColor"></rect>
+        <rect x="140" y="70" width="35" height="35" fill="currentColor"></rect>
+        <rect x="140" y="140" width="35" height="35" fill="currentColor"></rect>
+        <rect x="70" width="35" height="35" fill="currentColor"></rect>
+        <rect x="70" y="70" width="35" height="35" fill="currentColor"></rect>
+        <rect x="70" y="140" width="35" height="35" fill="currentColor"></rect>
+      </svg></div>
+    <div class="apps-inner"><iframe class="frame" src="https://eris.cafe/apps" frameborder="0"
+        style="height: 340px; width: 340px; color-scheme: light; border-radius: 25px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);"></iframe>
+    </div>
+  </div>
+  <script>setAppsTheme('light');</script>
 
 </body>
 
