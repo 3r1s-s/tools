@@ -1,35 +1,41 @@
-const icon = {
-    "check": `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg>`,
-    "home": `<svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.5258 0.204649C11.2291 -0.0682165 10.7709 -0.0682161 10.4742 0.204649L0.249923 9.68588C-0.266994 10.1612 0.0714693 11.0197 0.775759 11.0197L3.48971 11.0197V18.6923C3.48971 19.542 4.18295 20.2308 5.03811 20.2308H16.9619C17.8171 20.2308 18.5103 19.542 18.5103 18.6923V11.0197L21.2242 11.0197C21.9285 11.0197 22.267 10.1612 21.7501 9.68588L11.5258 0.204649Z" fill="currentColor"/></svg> `,
-}
+import { icon, tooltip, copy, saveAs, sanitize } from './utils.js';
 
-String.prototype.sanitize = function() { 
-    return this.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;').replace(/`/g, '&#96;').replace(/'/g, '&#39;');
-};
-
-// special thanks to 52525rr for a lot of the code
+// Elements
 const video = document.getElementById("video");
 const input = document.getElementById("input");
 const i1 = document.getElementById("canvas1");
 const i2 = document.getElementById("canvas2");
+const goButton = document.getElementById("goButton");
+const threshSlider = document.getElementById("threshhold");
+const fpsSlider = document.getElementById("fps");
+const textOutput = document.getElementById("text");
+const progress = document.getElementById("progress");
+
+let width = 256;
+let height = 256;
+const power2Square = 256;
+
+let ctx1 = i1.getContext('2d', { willReadFrequently: true });
+let ctx2 = i2.getContext("2d", { willReadFrequently: true });
 
 let conversion = false;
+let START = 0;
+let FPS = 15;
+let bits = 4;
+let threshold = 128;
+let size = 0;
+let bitmask = 0b11110000;
+let b = 8 - bits;
+let OP = [];
+let started = false;
 
-power2Square = 256;
-width = power2Square;
-height = power2Square;
-
-W = power2Square;
-H = W;
-i1.width = W;
-i1.height = H;
-i2.width = W;
-i2.height = H;
-START = 0;
-
-FPS = 15;
-bits = 4;
-threshold = 128;
+let frameNow = null;
+let frameLast = null;
+let treeBuf = null;
+let treeBuf2 = null;
+let bitstream = '';
+let seekResolve = null;
+let seekComplete = false;
 
 document.getElementById("threshhold").value = threshold;
 document.getElementById("demo").innerText = `Threshold: ${threshold}`;
@@ -37,27 +43,20 @@ document.getElementById("demo").innerText = `Threshold: ${threshold}`;
 document.getElementById("fps").value = FPS;
 document.getElementById("demo3").innerText = `Framerate: ${FPS}`;
 
-document.getElementById("text").value = "";
+textOutput.value = "";
 
-bitmask = 0b11110000;
-
-size = 0;
-b = 8 - bits;
-OP = [];
-
-var threshSlider = document.getElementById("threshhold");
-var output = document.getElementById("demo");
+// Event Listeners
+const outputLabel = document.getElementById("demo");
 threshSlider.oninput = function () {
-    if (START == 0) {
+    if (START === 0) {
         threshold = this.value;
-        output.innerHTML = `Threshold: ${this.value}`;
+        outputLabel.innerHTML = `Threshold: ${this.value}`;
     }
 };
 
-var fpsSlider = document.getElementById("fps");
-var output3 = document.getElementById("demo3");
+const output3 = document.getElementById("demo3");
 fpsSlider.oninput = function () {
-    if (START == 0) {
+    if (START === 0) {
         FPS = this.value;
         output3.innerHTML = `Framerate: ${this.value}`;
     }
@@ -65,12 +64,12 @@ fpsSlider.oninput = function () {
 
 input.addEventListener("change", function () {
     if (input.files.length > 0 && input.files[0].type.startsWith('video/')) {
-        tooltip({'title':`File Uploaded!`,'icon':icon.check});
+        tooltip({ 'title': `File Uploaded!`, 'icon': icon.check });
     }
-})
+});
 
 goButton.addEventListener("click", async function () {
-// thanks chatgpt you were TERRIBLE
+    // thanks chatgpt you were TERRIBLE
     started = false;
     if (conversion) {
         console.log("Conversion is already in progress. Please wait.");
@@ -100,15 +99,11 @@ goButton.addEventListener("click", async function () {
 });
 
 function disableInputs(disabled) {
-    document.getElementById("input").disabled = disabled;
-    document.getElementById("goButton").disabled = disabled;
-
-    document.getElementById("threshhold").disabled = disabled;
-    document.getElementById("fps").disabled = disabled;
+    input.disabled = disabled;
+    goButton.disabled = disabled;
+    threshSlider.disabled = disabled;
+    fpsSlider.disabled = disabled;
 }
-
-let seekResolve = null;
-let seekComplete = false;
 
 video.addEventListener("seeked", async function () {
     if (seekResolve) {
@@ -119,20 +114,20 @@ video.addEventListener("seeked", async function () {
 });
 
 function get(x, y, frame) {
-    let i = (y * width + x) * 4
-    return ([frame[i++], frame[i++], frame[i++], frame[i++]])
+    let i = (y * width + x) * 4;
+    return ([frame[i++], frame[i++], frame[i++], frame[i++]]);
 }
 
 function bin(x, b) {
-    return (String(x.toString(2).padStart(b, '0')))
+    return (String(x.toString(2).padStart(b, '0')));
 }
 
 function roundFrame(data) {
-    out = []
+    let out = [];
     for (let i = 0; i < data.length; i++) {
-        out.push(data[i] & bitmask)
+        out.push(data[i] & bitmask);
     }
-    return out
+    return out;
 }
 
 function coldist(c1, c2) {
@@ -140,51 +135,51 @@ function coldist(c1, c2) {
         (c2[0] - c1[0]) ** 2 +
         (c2[1] - c1[1]) ** 2 +
         (c2[2] - c1[2]) ** 2
-    )
+    );
 }
 
 function average(x, y, s, frame = frameNow) {
-    let sum = [0, 0, 0]
-    let ss = 0
+    let sum = [0, 0, 0];
+    let ss = 0;
     for (let j = y; j < y + s; j++) {
         for (let i = x; i < x + s; i++) {
-            let col = get(i, j, frame)
-            sum[0] += col[0]
-            sum[1] += col[1]
-            sum[2] += col[2]
-            ss++
+            let col = get(i, j, frame);
+            sum[0] += col[0];
+            sum[1] += col[1];
+            sum[2] += col[2];
+            ss++;
         }
     }
-    return [sum[0] / ss, sum[1] / ss, sum[2] / ss]
+    return [sum[0] / ss, sum[1] / ss, sum[2] / ss];
 }
 
 function vector(x, y, s, frame = frameNow) {
-    let colComp = average(x, y, s, frame)
-    let sum = 0
+    let colComp = average(x, y, s, frame);
+    let sum = 0;
     for (let j = y; j < y + s; j++) {
         for (let i = x; i < x + s; i++) {
-            sum += coldist(get(i, j, frame), colComp)
+            sum += coldist(get(i, j, frame), colComp);
         }
     }
-    return sum
+    return sum;
 }
 
 function delta(x, y, s, frame1, frame2) {
-    let sum = 0
-    let dt = 16
-    let temp = [0, 0, 0, 0]
+    let sum = 0;
+    let dt = 16;
+    let temp = [0, 0, 0, 0];
     for (let j = y; j < y + s; j++) {
         for (let i = x; i < x + s; i++) {
-            let c = get(i, j, frame1)
-            let l = get(i, j, frame2)
-            temp[0] = (Math.abs(c[0] - l[0])) / dt
-            temp[1] = (Math.abs(c[1] - l[1])) / dt
-            temp[2] = (Math.abs(c[2] - l[2])) / dt
-            let t = Math.floor(temp[0]) + Math.floor(temp[1]) + Math.floor(temp[2])
-            sum += t
+            let c = get(i, j, frame1);
+            let l = get(i, j, frame2);
+            temp[0] = (Math.abs(c[0] - l[0])) / dt;
+            temp[1] = (Math.abs(c[1] - l[1])) / dt;
+            temp[2] = (Math.abs(c[2] - l[2])) / dt;
+            let t = Math.floor(temp[0]) + Math.floor(temp[1]) + Math.floor(temp[2]);
+            sum += t;
         }
     }
-    return sum / s / Math.sqrt(s)
+    return sum / s / Math.sqrt(s);
 }
 
 function quadtree2(x, y, s) {
@@ -194,15 +189,15 @@ function quadtree2(x, y, s) {
             'y': y,
             'size': s,
             'color': average(x, y, s),
-        })
+        });
     }
-    let z = s / 2
+    let z = s / 2;
     return ({
         'z1': quadtree2(x, y, z),
         'z2': quadtree2(x + z, y, z),
         'z3': quadtree2(x, y + z, z),
         'z4': quadtree2(x + z, y + z, z),
-    })
+    });
 }
 
 function quadtree(x, y, s) {
@@ -212,7 +207,7 @@ function quadtree(x, y, s) {
             'y': y,
             'size': s,
             'color': null,
-        })
+        });
     }
 
     if (s <= 1 || vector(x, y, s, frameNow) / s < threshold) {
@@ -221,58 +216,57 @@ function quadtree(x, y, s) {
             'y': y,
             'size': s,
             'color': average(x, y, s),
-        })
+        });
     }
-    let z = s / 2
+    let z = s / 2;
     return ({
         'z1': quadtree(x, y, z),
         'z2': quadtree(x + z, y, z),
         'z3': quadtree(x, y + z, z),
         'z4': quadtree(x + z, y + z, z),
-    })
+    });
 }
 
 function draw(obj, target = ctx2) {
     if (!obj.hasOwnProperty('z1')) {
         if (obj.color != null) {
-            a = obj.color
-            target.fillStyle = `rgb(${a[0]},${a[1]},${a[2]})`
-            target.fillRect(obj.x, obj.y, obj.size, obj.size)
+            let a = obj.color;
+            target.fillStyle = `rgb(${a[0]},${a[1]},${a[2]})`;
+            target.fillRect(obj.x, obj.y, obj.size, obj.size);
         }
     } else {
-        draw(obj.z1)
-        draw(obj.z2)
-        draw(obj.z3)
-        draw(obj.z4)
+        draw(obj.z1);
+        draw(obj.z2);
+        draw(obj.z3);
+        draw(obj.z4);
     }
 }
 
 function setpixel(x, y, val, target = treeBuf) {
-
-    let i = (y * width + x) * 4
-    target[i++] = val[0]
-    target[i++] = val[1]
-    target[i++] = val[2]
+    let i = (y * width + x) * 4;
+    target[i++] = val[0];
+    target[i++] = val[1];
+    target[i++] = val[2];
 }
 
 function findDiffs(a1, a2) {
-    let o = {}
+    let o = {};
     for (let i = 0; i < Math.max(a1.length, a2.length); i++) {
         if (Math.abs(a1[i] - a2[i]) >= 16) {
-            o[i + []] = [] + [a1[i], a2[i]]
+            o[i + []] = [] + [a1[i], a2[i]];
         }
     }
-    return (o)
+    return (o);
 }
 
 function setsquare(x, y, s, val, target = treeBuf) {
     if (val + [] == [253.00390625, 253.091796875, 251.671875] + []) {
-        console.log(x, y, s)
+        console.log(x, y, s);
     }
 
     for (let j = y; j < y + s; j++) {
         for (let i = x; i < x + s; i++) {
-            setpixel(i, j, val, target)
+            setpixel(i, j, val, target);
         }
     }
 }
@@ -280,52 +274,50 @@ function setsquare(x, y, s, val, target = treeBuf) {
 function draw2(obj, target = treeBuf) {
     if (!obj.hasOwnProperty('z1')) {
         if (obj.color != null) {
-            setsquare(obj.x, obj.y, obj.size, obj.color, target)
+            setsquare(obj.x, obj.y, obj.size, obj.color, target);
         }
     } else {
-        draw2(obj.z1, target)
-        draw2(obj.z2, target)
-        draw2(obj.z3, target)
-        draw2(obj.z4, target)
+        draw2(obj.z1, target);
+        draw2(obj.z2, target);
+        draw2(obj.z3, target);
+        draw2(obj.z4, target);
     }
 }
 
 function encode(obj) {
     if (!obj.hasOwnProperty('z1')) {
         if (obj.color != null) {
-            let a = obj.color
-            return `01${bin(a[0] >> 4, 4)}${bin(a[1] >> 4, 4)}${bin(a[2] >> 4, 4)}`
+            let a = obj.color;
+            return `01${bin(a[0] >> 4, 4)}${bin(a[1] >> 4, 4)}${bin(a[2] >> 4, 4)}`;
         } else {
-            return `00`
+            return `00`;
         }
     } else {
-        return `1${encode(obj.z1)}${encode(obj.z2)}${encode(obj.z3)}${encode(obj.z4)}`
+        return `1${encode(obj.z1)}${encode(obj.z2)}${encode(obj.z3)}${encode(obj.z4)}`;
     }
 }
 
 function reset() {
-  input.value = '';
-  START = 0;
-  video.pause();
-  video.currentTime = 0;
-  ctx1.clearRect(0, 0, width, height);
-  ctx2.clearRect(0, 0, width, height);
+    input.value = '';
+    START = 0;
+    video.pause();
+    video.currentTime = 0;
+    ctx1.clearRect(0, 0, width, height);
+    ctx2.clearRect(0, 0, width, height);
 
-  document.getElementById("goButton").disabled = false;
+    goButton.disabled = false;
 };
 
 function encodeb64(str) {
-    str2 = ""
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    let str2 = "";
+    let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     for (let i = 0; i < str.length; i += 6) {
-        str2 += chars[Math.floor("0b" + (str.slice(i, i + 6)))]
+        str2 += chars[Math.floor("0b" + (str.slice(i, i + 6)))];
     }
-    return str2
+    return str2;
 }
 
-let started = false;
-
-video.addEventListener("canplaythrough", async function() {
+video.addEventListener("canplaythrough", async function () {
     console.log("Video can play through. Starting processing...");
 
     if (started) {
@@ -347,8 +339,6 @@ video.addEventListener("canplaythrough", async function() {
     treeBuf = new Array(4 * width * height).fill(0);
     treeBuf2 = new Array(4 * width * height).fill(0);
 
-    const progress = document.getElementById("progress");
-
     while (i < FRAMES) {
         i++;
 
@@ -368,7 +358,7 @@ video.addEventListener("canplaythrough", async function() {
 
         ctx1.drawImage(video, 0, 0, width, height);
         frameNow = ctx1.getImageData(0, 0, width, height).data;
-        frameOut = quadtree2(0, 0, 256);
+        let frameOut = quadtree2(0, 0, 256);
 
         draw2(frameOut, treeBuf);
         frameNow = treeBuf.slice();
@@ -380,7 +370,7 @@ video.addEventListener("canplaythrough", async function() {
 
         bitstream += encode(frameOut);
         size = bitstream.length;
-        
+
         document.getElementById("F").innerText = `Frame ${i} / ${FRAMES}`;
         document.getElementById("S").innerText = `Total size: ${Math.ceil(size / 6 / 1024)} KB`;
         document.getElementById("P").innerText = `Estimated size: ${Math.ceil((size / 6 * FRAMES / i) / 1024)} KB`;
@@ -390,7 +380,7 @@ video.addEventListener("canplaythrough", async function() {
     conversion = false;
     console.log("Conversion completed. Bitstream length:", size);
 
-    document.getElementById("text").value = encodeb64(bitstream);
+    textOutput.value = encodeb64(bitstream);
     disableInputs(false);
     openOutput();
     reset();
@@ -408,35 +398,34 @@ video.addEventListener("canplaythrough", async function() {
     document.getElementById("R").innerText = `100% Complete`;
 });
 
-function copyButton() {
-    copy(document.getElementById("text").value);
-    tooltip({'title':"Text Copied!",'icon':icon.check})
+// UI Event Handlers using EventListeners
+
+const copyBtn = document.getElementById("copyButton");
+if (copyBtn) {
+    copyBtn.addEventListener("click", () => {
+        copy(textOutput.value);
+        tooltip({ 'title': "Text Copied!", 'icon': icon.check });
+    });
+    copyBtn.removeAttribute("onclick");
 }
 
-function copy(text) {
-    navigator.clipboard.writeText(text);
+const saveBtn = document.getElementById("saveButton");
+if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+        const blob = new Blob([textOutput.value], { type: "text/plain;charset=utf-8" });
+        saveAs(blob, "output.txt");
+        tooltip({ 'title': "File Saved!", 'icon': icon.check });
+    });
+    saveBtn.removeAttribute("onclick");
 }
 
-function saveButton() {
-    const blob = new Blob([document.getElementById("text").value], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, "output.txt");
-
-    tooltip({'title':"File Saved!",'icon':icon.check})
+const closeBtn = document.getElementById("close");
+if (closeBtn) {
+    closeBtn.addEventListener("click", closeOutput);
+    closeBtn.removeAttribute("onclick");
 }
 
-function saveAs(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-    }, 0);
-}
-
+// Helper functions for UI
 function openOutput() {
     document.querySelector('.output-outer').classList.add('visible');
     document.querySelector('.output-outer').classList.remove('animate-out');
@@ -450,41 +439,8 @@ function closeOutput() {
     }, 200);
 }
 
-document.querySelector('.output-outer').addEventListener("click", function(event) {
+document.querySelector('.output-outer').addEventListener("click", function (event) {
     if (!event.target.closest(".output-inner")) {
         closeOutput();
     }
 });
-
-function tooltip(data) {
-    document.querySelectorAll('.tooltip').forEach(tooltip => {
-        tooltip.classList.remove('visible');
-        setTimeout(() => {
-            tooltip.remove();
-        }, 1000);
-    });
-
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
-
-    tooltip.innerHTML = `
-        ${data.icon ? `<div>${data.icon}</div>` : ``}
-        ${data.title ? `<span>${data.title.sanitize()}</span>` : ``}
-    `;
-    
-    document.body.appendChild(tooltip);
-
-    setTimeout(() => {
-        tooltip.style = `visibility: visible;`;
-        tooltip.classList.add('visible');
-    }, 10);
-
-    setTimeout(() => {
-        tooltip.classList.remove('visible');
-        setTimeout(() => {
-            tooltip.remove();
-        }, 1000);
-    }, 3000);
-}
-
-// tooltip({'title':"Copied!",'icon':icon.copy})

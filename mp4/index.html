@@ -52,7 +52,7 @@
         <div class="output-inner">
             <div class="title">
                 <span class="title-name">Output</span>
-                <button class="close-button" id="close" onclick="closeOutput();">
+                <button class="close-button" id="close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M14.3527 12.0051L19.8447 6.51314C20.496 5.86247 20.496 4.80714 19.8447 4.15647C19.1933 3.50514 18.1387 3.50514 17.488 4.15647L11.996 9.64847L6.50401 4.15647C5.85334 3.50514 4.79734 3.50514 4.14734 4.15647C3.49601 4.80714 3.49601 5.86247 4.14734 6.51314L9.63934 12.0051L4.13401 17.5105C3.48267 18.1618 3.48267 19.2165 4.13401 19.8671C4.45934 20.1925 4.88601 20.3551 5.31267 20.3551C5.73934 20.3551 6.16601 20.1925 6.49134 19.8671L11.9967 14.3611L17.4887 19.8531C17.814 20.1785 18.2407 20.3411 18.6673 20.3411C19.094 20.3411 19.52 20.1785 19.846 19.8531C20.4973 19.2018 20.4973 18.1471 19.846 17.4965L14.3527 12.0051Z"
@@ -63,8 +63,8 @@
             <textarea class="output-text" id="text" name="output" rows="10" cols="87" readonly
                 onclick="this.select()"></textarea>
             <div class="buttons">
-                <button class="button" id="saveButton" onclick="saveButton();">Save File</button>
-                <button class="button" id="copyButton" onclick="copyButton();">Copy</button>
+                <button class="button" id="saveButton">Save File</button>
+                <button class="button" id="copyButton">Copy</button>
             </div>
         </div>
     </div>
@@ -89,22 +89,6 @@
     </div>
     <script>setAppsTheme('light');</script>
 </body>
-<script>
-    video.height = video.width = 0
-    width = 512
-    height = width
-    let cv1 = document.getElementById("canvas1");
-    let ctx1 = cv1.getContext('2d', {
-        willReadFrequently: true
-    });
-    let imgData = ctx1.createImageData(width, height);
-
-    let cv2 = document.getElementById("canvas2");
-    let ctx2 = cv2.getContext("2d", {
-        willReadFrequently: true
-    });
-    let imgData2 = ctx2.createImageData(width, height);
-</script>
-<script src="/src/scripts/mp4.js"></script>
+<script src="/src/scripts/mp4.js" type="module"></script>
 
 </html>
