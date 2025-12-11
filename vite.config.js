@@ -12,6 +12,7 @@ export default defineConfig({
                 bpm: 'bpm/index.html',
                 sqrt: 'sqrt/index.html',
                 mp4: 'mp4/index.html',
+                credits: 'mp4/credits/index.html'
             }
         }
     }
