@@ -1,6 +1,5 @@
 import { icon, tooltip, copy, saveAs, sanitize } from './utils.js';
 
-// Elements
 const video = document.getElementById("video");
 const input = document.getElementById("input");
 const i1 = document.getElementById("canvas1");
@@ -45,7 +44,6 @@ document.getElementById("demo3").innerText = `Framerate: ${FPS}`;
 
 textOutput.value = "";
 
-// Event Listeners
 const outputLabel = document.getElementById("demo");
 threshSlider.oninput = function () {
     if (START === 0) {
@@ -69,7 +67,6 @@ input.addEventListener("change", function () {
 });
 
 goButton.addEventListener("click", async function () {
-    // thanks chatgpt you were TERRIBLE
     started = false;
     if (conversion) {
         console.log("Conversion is already in progress. Please wait.");
@@ -398,8 +395,6 @@ video.addEventListener("canplaythrough", async function () {
     document.getElementById("R").innerText = `100% Complete`;
 });
 
-// UI Event Handlers using EventListeners
-
 const copyBtn = document.getElementById("copyButton");
 if (copyBtn) {
     copyBtn.addEventListener("click", () => {
@@ -425,7 +420,6 @@ if (closeBtn) {
     closeBtn.removeAttribute("onclick");
 }
 
-// Helper functions for UI
 function openOutput() {
     document.querySelector('.output-outer').classList.add('visible');
     document.querySelector('.output-outer').classList.remove('animate-out');
